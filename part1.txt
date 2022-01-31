@@ -6,8 +6,16 @@ with '=' signs and keep lines to a max of 80 chars long.
 1.  What actions does a kernel perform to context switch between processes?
 
 /* your answer */
+Ans: There must be an interrupt between processes switching. Before the
+ switching, OS needs to initialize the trap table and record all handlers in
+ a specific place. When timer interrupt, save the regs of the first process in
+ k-stack(A), switch to kernel mode and jump to trap handler. Then the OS need
+ to save regs(A) in proc_t(A), restore proc_t(B) in regs(B) and switch to 
+k-stack(B), then jump out from trap. restore k-stack(B) in regs(B) and switch 
+to user mode. then process B.
 
 =================================== Q1 end ====================================
+
 
 
 ================================== Q2 start ===================================
@@ -15,24 +23,33 @@ with '=' signs and keep lines to a max of 80 chars long.
     What is this state for, and when does it leave this state?
 
 /* your answer */
+Ans:  if the process is not done and be terminated, the process state will go
+ to "block state", this "block state" gives this process a tag that this
+ process is not ready to be executed. If the prepositive processes are done,
+ the state will switch to "ready" from this "block state". If the process is 
+terminated because of its  accomplishment, but has not been cleaned, the
+ process state is called "final state"("zombie" state in UNIX system). this 
+allows other process to examine the return code of this process. When this 
+process be cleaned up, this process leaves this state.
 
-=================================== Q2 end ====================================
-
+================================== Q2 end =====================================
 
 ================================== Q3 start ===================================
 3.  What is typeof? Is it a C language keyword, function, or macro? What does
     it do?
 
 /* your answer */
+Ans: It's a C keyword. If the data type in difficult to read, you can use 
+typeof (***) to ruturn the data type of that variable.
 
 =================================== Q3 end ====================================
-
 
 ================================== Q4 start ===================================
 4.  What is offsetof? Is it a keyword, function, or macro? What does it do?
 
 /* your answer */
-
+Ans: it's a macro. It can return the difference of your current pointer and the
+ initial place of this structure.
 =================================== Q4 end ====================================
 
 
@@ -40,7 +57,7 @@ with '=' signs and keep lines to a max of 80 chars long.
 5.  What does the container_of() macro do?
 
 /* your answer */
-
+Ans:  container_of can find the parent structure containing any given variable.
 =================================== Q5 end ====================================
 
 
@@ -50,7 +67,8 @@ with '=' signs and keep lines to a max of 80 chars long.
     extensions. Can you identify what they are?
 
 /* your answer */
-
+ Ans: Only __mptr uses the GNU c extensions. any regular headers cannot compile
+ this part.
 =================================== Q6 end ====================================
 
 
@@ -60,5 +78,7 @@ with '=' signs and keep lines to a max of 80 chars long.
     What is the purpose of that 1st line?
 
 /* your answer */
-
+Ans: the first line limits the type of this member. It is necessary because
+ macro cannot detect the input datatype, if you don't check the datatype, some
+ errors may be happen during execution.
 =================================== Q7 end ====================================
